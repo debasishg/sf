@@ -437,7 +437,7 @@ Proof.
     reflexivity.
   Qed.
 
-Theorem plus_n_Sm : ∀n m : nat, 
+Theorem plus_n_Sm : forall n m : nat, 
   S (n + m) = n + (S m).
 
 Proof.
@@ -450,6 +450,48 @@ Proof.
   Case "n = S n'".
     simpl.
     rewrite IHn'.
+    reflexivity.
+  Qed.
+
+Theorem plus_comm : forall n m : nat,
+  n + m = m + n.
+
+Proof.
+  intros n m.
+  induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    rewrite plus_0_b.
+    reflexivity.
+
+  Case "n = S n'".
+    rewrite <- plus_n_Sm.
+    rewrite <- IHn'.
+    simpl.
+    reflexivity.
+  Qed.
+
+Fixpoint double (n:nat) :=
+  match n with
+  | O => O
+  | S n' => S (S (double n'))
+  end.
+
+Lemma double_plus : forall n, 
+  double n = n + n .
+
+Proof.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    reflexivity.
+
+  Case "n = S n'".
+    simpl.
+    rewrite IHn'.
+    simpl.
+    rewrite plus_n_Sm.
     reflexivity.
   Qed.
 
