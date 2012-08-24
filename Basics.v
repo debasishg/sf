@@ -517,4 +517,146 @@ Proof.
   rewrite -> H. reflexivity. 
   Qed.
 
+Theorem plus_assoc : forall n m p : nat,
+  n + (m + p) = (n + m) + p.
 
+Proof.
+  intros n m p. 
+  induction n as [| n'].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n'".
+    simpl. 
+    rewrite -> IHn'. 
+    reflexivity. 
+  Qed.
+   
+Theorem plus_swap : forall n m p : nat, 
+  n + (m + p) = m + (n + p).
+  
+Proof.
+  intros n m p.
+  assert (n + (m + p) = n + m + p) as H.
+    Case "proof of assertion".
+      rewrite plus_assoc.
+      reflexivity.
+  rewrite H.
+  assert (m + (n + p) = m + n + p) as K.
+    Case "proof of assertion".
+    rewrite plus_assoc.
+    reflexivity.
+  rewrite K.
+  simpl.
+  assert (n + m = m + n) as L.
+    Case "proof of assertion".
+    rewrite plus_comm.
+    reflexivity.
+  rewrite L.
+  reflexivity.
+  Qed.
+    
+Theorem mult_1 : forall n : nat,
+  n * (S O) = n.
+
+Proof.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    reflexivity.
+  Case "n = Sn'".
+    simpl.
+    rewrite IHn'.
+    reflexivity.
+  Qed.
+
+Theorem mult_distr : forall n m : nat,
+  n * ((S O) + m) = n * (S m).
+
+Proof.
+  intros n m.
+  induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    reflexivity.
+  Case "n = S n'".
+    reflexivity.
+  Qed.
+
+Theorem mult_comm : ∀m n : nat,
+  m * n = n * m.
+
+Proof.
+  (* FILL IN HERE *) Admitted.
+
+Theorem evenb_n__oddb_Sn : forall n : nat,
+  evenb n = negb (evenb (S n)).
+
+Proof.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n'".
+    assert (evenb n' = evenb (S (S n'))) as H.
+      reflexivity.
+    rewrite <- H.
+    rewrite IHn'.
+    rewrite negb_involutive.
+    reflexivity.
+  Qed.
+
+Theorem ble_nat_refl : forall n : nat,
+  true = ble_nat n n.
+
+Proof.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n'".
+    simpl.
+    rewrite <- IHn'.
+    reflexivity.
+  Qed.
+
+Theorem zero_nbeq_S : forall n:nat,
+  beq_nat 0 (S n) = false.
+
+Proof. 
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n'".
+    simpl.
+    reflexivity.
+  Qed.
+
+Theorem andb_false_r : ∀b : bool,
+  andb b false = false.
+
+Proof.
+  intros b.
+  destruct b.
+    reflexivity.
+    reflexivity.
+  Qed.
+
+Theorem plus_ble_compat_l : ∀n m p : nat, 
+  ble_nat n m = true → ble_nat (p + n) (p + m) = true.
+
+Proof.
+  intros n m p.
+  intros H.
+  simpl.
+  induction p as [| p'].
+  Case "p = 0".
+    simpl.
+    rewrite H.
+    reflexivity.
+  Case "p = S p'".
+    simpl.
+    rewrite IHp'.
+    reflexivity.
+  Qed.
