@@ -633,7 +633,7 @@ Proof.
     reflexivity.
   Qed.
 
-Theorem andb_false_r : ∀b : bool,
+Theorem andb_false_r : forall b : bool,
   andb b false = false.
 
 Proof.
@@ -643,8 +643,8 @@ Proof.
     reflexivity.
   Qed.
 
-Theorem plus_ble_compat_l : ∀n m p : nat, 
-  ble_nat n m = true → ble_nat (p + n) (p + m) = true.
+Theorem plus_ble_compat_l : forall n m p : nat, 
+  ble_nat n m = true -> ble_nat (p + n) (p + m) = true.
 
 Proof.
   intros n m p.
@@ -658,5 +658,43 @@ Proof.
   Case "p = S p'".
     simpl.
     rewrite IHp'.
+    reflexivity.
+  Qed.
+
+Theorem S_nbeq_0 : forall n:nat,
+  beq_nat (S n) 0 = false.
+
+Proof.
+  intros n.
+  reflexivity.
+  Qed.
+
+Theorem mult_1_l : forall n:nat, 
+  1 * n = n.
+
+Proof.
+  intros n.
+  simpl.
+  rewrite plus_0_b.
+  reflexivity.
+  Qed.
+
+Theorem all3_spec : forall b c : bool,
+    orb
+      (andb b c)
+      (orb (negb b)
+               (negb c))
+  = true.
+
+Proof.
+  intros b c.
+  destruct b.
+  Case "b = true".
+    simpl.
+    destruct c.
+     reflexivity.
+     reflexivity.
+  Case "b = false".
+    simpl.
     reflexivity.
   Qed.
